@@ -7,5 +7,5 @@ esxcfg-advcfg -s 20000 /BufferCache/FlushInterval
 
 # collect logs for vmware
 cd /vmfs/volumes/datastoreXYZ
-crypto-util keys vm-support --password prolog
+crypto-util keys vm-support --password REDACTED
 vm-support
