@@ -1,0 +1,15 @@
+#!/bin/sh
+
+iptables -F
+iptables -A INPUT -s 75.183.215.16 -j ACCEPT
+iptables -A INPUT -s 10.0.0.0/8 -j ACCEPT
+iptables -A INPUT -s 207.87.188.224/27 -j ACCEPT
+iptables -A INPUT -s 209.118.108.192/27 -j ACCEPT
+iptables -A INPUT -s 76.76.14.0/24 -j ACCEPT
+iptables -A INPUT -s 3.209.252.210/32 -j ACCEPT
+iptables -A INPUT -s 34.225.243.190/32 -j ACCEPT
+#iptables -A INPUT -s 2602:809:8000::/44 -j ACCEPT
+iptables -A INPUT -s 68.66.164.80/29 -j ACCEPT
+iptables -A INPUT -i eth1 -j DROP
+
+iptables-save > /etc/iptables.rules
