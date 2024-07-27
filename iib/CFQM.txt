@@ -1,0 +1,51 @@
+useradd P8Admin  --password <REDACTED>
+groupadd mqmweb
+usermod -a -G mqmweb P8Admin
+usermod -a -G mqmweb mqm
+
+mqsistop -i CFNODE
+endmqm -i CFQM
+strmqm CFQM
+mqsistart -i CFNODE
+
+mqsireportproperties CFNODE -b webadmin -o server -a
+
+setmqaut -m CFQM -t qmgr -g mqmweb +connect +inq
+setmqaut -m CFQM -n SYSTEM.BROKER.DEPLOY.QUEUE -t queue -g mqmweb +put
+setmqaut -m CFQM -n SYSTEM.BROKER.DEPLOY.REPLY -t queue -g mqmweb +put +get
+setmqaut -m CFQM -n SYSTEM.BROKER.AUTH -t queue -g mqmweb +inq +put +set
+setmqaut -m CFQM -n SYSTEM.BROKER.AUTH.DEFAULT -t queue -g mqmweb +inq +put +set
+setmqaut -m CFQM -n SYSTEM.BROKER.DC.AUTH -t queue -g mqmweb +inq +set
+setmqaut -m CFQM -n SYSTEM.BROKER.WEBADMIN.SUBSCRIPTION -t queue -g mqmweb +put +get
+setmqaut -m CFQM -n SYSTEM.BROKER.MB.TOPIC -t topic -g mqmweb +sub +pub
+
+dmpmqaut -m CFQM -g mqmweb
+
+mqsiwebuseradmin CFNODE -c -u mqm -r mqm -a ibmioc16
+mqsiwebuseradmin CFNODE -c -u P8Admin -r P8Admin -a <REDACTED>
+mqsiwebuseradmin CFNODE -m -u P8Admin -r P8Admin
+
+mqsistop CFNODE
+mqsichangebroker CFNODE -s active
+mqsistart CFNODE
+
+http://www.ibm.com/developerworks/websphere/library/techarticles/1312_fan/1312_fan.html
+
+The logged-on user ID does not have the required permissions to access data or broker resources in the web user interface. See your broker administrator to set up the required permissions.
+
+download 9.0.0.4
+install 9.0.0.4
+uninstall 9.0.0.2
+
+added P8Admin, mqm to mqmq group
+
+-------------------------------------------------------------------------------------
+setmqaut -m CFQM -t qmgr -p webtest
+setmqaut -m CFQM -n SYSTEM.BROKER.DEPLOY.QUEUE -t queue -p webtest
+setmqaut -m CFQM -n SYSTEM.BROKER.DEPLOY.REPLY -t queue -p webtest
+setmqaut -m CFQM -n SYSTEM.BROKER.AUTH -t queue -p webtest
+setmqaut -m CFQM -n SYSTEM.BROKER.AUTH.IntegrationServerX -t queue -p webtest
+setmqaut -m CFQM -n SYSTEM.BROKER.AUTH.IntegrationServery -t queue -p webtest
+setmqaut -m CFQM -n SYSTEM.BROKER.DC.AUTH -t queue -p webtest
+setmqaut -m CFQM -n SYSTEM.BROKER.WEBADMIN.SUBSCRIPTION -t queue -p webtest
+setmqaut -m CFQM -n SYSTEM.BROKER.MB.TOPIC -t topic -p webtest
